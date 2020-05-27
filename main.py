@@ -22,7 +22,7 @@ from perspective_transform import PerspectiveTransform
 from line import Line
 from line_detector import LineDetector
 
-# this function computes camera Calibration Parameters
+# This function computes camera Calibration Parameters
 # 1. Calibration Matrix
 # 2. Distortion Coefficients
 def GetCalibrationParam(image_url):

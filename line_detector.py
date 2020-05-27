@@ -88,9 +88,11 @@ class LineDetector(object):
         self.count = 0
     
     # This function computes radius of curvature for each lane in meters
-    def __CalCurvature(self):
-       
-        ym_per_pix = 30./720
+    def CalculateCurvature(self):
+        
+        # Conversion from pixels to meters
+        # By Simply multiplying the number of pixels by 3.7/700 along x dim and 30/720 along y dim.
+        ym_per_pix = 30/720
         xm_per_pix = 3.7/700
 
         left_fit_cr = np.polyfit(self.yvals * ym_per_pix, self.left_line.bestx * xm_per_pix, 2)
@@ -102,7 +104,7 @@ class LineDetector(object):
                                         /np.absolute(2*right_fit_cr[0])
 
     def AddCurvatureToImage(self, image):
-        self.__CalCurvature()
+        self.CalculateCurvature()
         curvature = int((self.left_line.radius_of_curvature+self.right_line.radius_of_curvature)/2)
         cv2.putText(
             image, 'Radius of Curvature {}(m)'.format(curvature),
@@ -130,7 +132,7 @@ class LineDetector(object):
         index = np.argmax(index_list) + int(window_width / 2) + left_boundary
         return index
 
-    # This function calculats Histogram Thresholding for decreasing noise from given binary images
+    # This function calculates Histogram Thresholding for decreasing noise from given binary images
     def HistogramThresholding(self, img, xsteps=20, ysteps=40, window_width=10):
     
         xstride = img.shape[0] // xsteps
