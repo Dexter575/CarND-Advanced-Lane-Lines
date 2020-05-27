@@ -247,7 +247,6 @@ class LineDetector(object):
         slope_binary = self.GaussianBlurr(slope_binary, kernel_size=9)
         return slope_binary
 
-
     # Given an undistorted image, return converted image using Color Slope Conversion
     def ColorSlopeThresConversion(self, undist_img):
         s_binary =self.GetSBinary(undist_img, thres=(150, 255))
