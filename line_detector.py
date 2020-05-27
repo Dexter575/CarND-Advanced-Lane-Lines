@@ -50,7 +50,7 @@ class LineDetector(object):
     def MaskImageByLines(self, original_image, width=10):
         image = np.zeros_like(original_image)
         for yv, ll in zip(self.yvals, self.left_line.bestx):
-            image[yv, ll-width:ll+width] = 1
+            image[int(yv), int(ll-width):int(ll+width)] = 1
         for yv, rl in zip(self.yvals, self.right_line.bestx):
             image[yv, rl-width : rl+width] = 1
         return image
