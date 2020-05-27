@@ -32,8 +32,8 @@ def GetCalibrationParam(image_url):
     objp = np.zeros((6*9,3), np.float32)
     objp[:,:2] = np.mgrid[0:9, 0:6].T.reshape(-1,2)
 
-    objpoints = [] # 3d Points in real world space
-    imgpoints = [] # 2d Points in image plane.
+    object_points = [] # 3d Points in real world space
+    image_points = [] # 2d Points in image plane.
     corner = (9, 6) # Chessboard size to 9x6
 
     # Iterate over the stored images
@@ -43,15 +43,15 @@ def GetCalibrationParam(image_url):
         ret, corners = cv2.findChessboardCorners(gray, corner, None)
 
         if ret:
-            objpoints.append(objp)
-            imgpoints.append(corners)
+            object_points.append(objp)
+            image_points.append(corners)
 
     img_size = (img.shape[1], img.shape[0])
 
     # Here, we will use built in cv2 function named as calibrateCamera
     # This function finds the camera intrinsic and extrinsic parameters...
     # from several views of a calibration pattern
-    ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, img_size,None,None)
+    ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(object_points, image_points, img_size,None,None)
 
     # Return Calibration matrix and Distortion Matrix
     return mtx, dist
