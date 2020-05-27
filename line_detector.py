@@ -33,18 +33,18 @@ class LineDetector(object):
             raise IOError("Please Set Correct Calibration File")
             sys.exit()
 
-    def GetFilteredImgAndCalPolynomial(self, converted_img, width=30):
-        image = self.MaskImageByAverageLines(converted_img, width=width)
-        _, self.left_line.current_fit = self.CalculatePolynomial(image, 0, int(image.shape[1] / 2))
-        _, self.right_line.current_fit = self.CalculatePolynomial(image, int(image.shape[1] / 2), image.shape[1])
-        return image
-
     def MaskImageByAverageLines(self, converted_img, width=30):
         image = np.zeros_like(converted_img)
         for yv, ll in zip(self.yvals, self.left_line.bestx):
             image[yv, ll-width:ll+width] = converted_img[yv, ll-width:ll+width]
         for yv, rl in zip(self.yvals, self.right_line.bestx):
             image[yv, rl-width:rl+width] = converted_img[yv, rl-width:rl+width]
+        return image
+    
+    def GetFilteredImgAndCalPolynomial(self, converted_img, width=30):
+        image = self.MaskImageByAverageLines(converted_img, width=width)
+        _, self.left_line.current_fit = self.CalculatePolynomial(image, 0, int(image.shape[1] / 2))
+        _, self.right_line.current_fit = self.CalculatePolynomial(image, int(image.shape[1] / 2), image.shape[1])
         return image
 
     def MaskImageByLines(self, original_image, width=10):
